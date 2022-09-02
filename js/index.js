@@ -57,7 +57,12 @@
   function setLayout() {
     // 각 section의 높이 세팅
     for (let i = 0; i < sceneInfo.length; i++) {
-      sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight; //
+      // sceneInfo type에 따른 scrollHeight 예외처리
+      if (sceneInfo[i].type === 'sticky') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+      } else if (sceneInfo[i].type === 'normal') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight;
+      }
       sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
     }
 
