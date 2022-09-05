@@ -23,6 +23,7 @@
       values: {
         videoImageCount: 300,
         imageSequence: [0, 299],
+        canvas_opacity: [1, 0, { start: 0.9, end: 1 }],
         // 텍스트 opacity 값과 구간 지정
         messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
         messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
@@ -135,6 +136,11 @@
       }
     }
     document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+    // 가로세로 비율에 맞게 canvas 크기 조정
+    // 원래 캔버스 높이인 1080과 윈도우 창 높이와 비교해서 비율 구하기 -> 그 비율대로 scale값 맞춰주면 된다! (1 = 100%)
+    const heightRatio = window.innerHeight / 1080;
+    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
   }
 
   function calcValues(values, currentYOffset) {
@@ -165,7 +171,7 @@
     return rv;
   }
 
-  function playAinmation() {
+  function playAnimation() {
     // 스크롤 애니메이션 진행
     const objs = sceneInfo[currentScene].objs;
     const values = sceneInfo[currentScene].values;
@@ -173,11 +179,15 @@
     const scrollHeight = sceneInfo[currentScene].scrollHeight; // 현재 씬의 scorllHeight
     const scrollRatio = (yOffset - prevScrollHeight) / scrollHeight; // 현재 씬에서 스크롤 된 범위의 비율
 
-    console.log(currentScene);
-
     switch (currentScene) {
       case 0:
-        // console.log('0 play');
+        // canvas의 context 객체를 사용해 이미지 그리기
+        let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+        // canvas opacity 설정
+        objs.canvas.style.opacity = calcValues(values.canvas_opacity, currentYOffset);
+
+        // 스크롤 비율 및 구간에 따른 텍스트 애니메이션 설정
         if (scrollRatio <= 0.22) {
           // in
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
@@ -245,7 +255,6 @@
         break;
 
       case 2:
-        // console.log('2 play');
         if (scrollRatio <= 0.25) {
           // in
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
@@ -301,7 +310,6 @@
         break;
 
       case 3:
-        // console.log('3 play');
         break;
     }
   }
@@ -329,7 +337,7 @@
 
     if (enterNewScene) return;
 
-    playAinmation();
+    playAnimation();
   }
   window.addEventListener('scroll', () => {
     // 현재 스크롤 위치 변수에 담기
@@ -338,5 +346,9 @@
   });
 
   window.addEventListener('resize', setLayout);
-  window.addEventListener('load', setLayout);
+  window.addEventListener('load', () => {
+    setLayout();
+    // 화면 로드됐을 때 canvas 첫 이미지 그려주기
+    sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+  });
 })();
