@@ -98,6 +98,19 @@
     },
   ];
 
+  // canvas에 그려서 처리할 이미지들을 세팅할 함수 생성
+  function setCanvasImages() {
+    // 첫 번째 씬이니까 sceneInfo[0]
+    for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
+      // 이미지 객체 생성 imgElem = document.createElement('img');와 동일함
+      imgElem = new Image();
+      imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
+      sceneInfo[0].objs.videoImages.push(imgElem);
+    }
+    console.log(sceneInfo[0].objs.videoImages);
+  }
+  setCanvasImages();
+
   function setLayout() {
     // 각 section의 높이 세팅
     for (let i = 0; i < sceneInfo.length; i++) {
