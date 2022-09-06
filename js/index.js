@@ -65,8 +65,15 @@
         messageC: document.querySelector('#scroll-section-2 .c'),
         pinB: document.querySelector('#scroll-section-2 .b .pin'),
         pinC: document.querySelector('#scroll-section-2 .c .pin'),
+        canvas: document.querySelector('#video-canvas-1'),
+        context: document.querySelector('#video-canvas-1').getContext('2d'),
+        videoImages: [],
       },
       values: {
+        videoImageCount: 960,
+        imageSequence: [0, 959],
+        canvas_opacity_in: [0, 1, { start: 0, end: 0.1 }],
+        canvas_opacity_out: [1, 0, { start: 0.95, end: 1 }],
         messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
         messageB_translateY_in: [30, 0, { start: 0.5, end: 0.55 }],
         messageC_translateY_in: [30, 0, { start: 0.72, end: 0.77 }],
@@ -101,14 +108,23 @@
 
   // canvas에 그려서 처리할 이미지들을 세팅할 함수 생성
   function setCanvasImages() {
-    // 첫 번째 씬이니까 sceneInfo[0]
+    // sceneInfo[0]
+    let imgElem;
     for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
       // 이미지 객체 생성 imgElem = document.createElement('img');와 동일함
       imgElem = new Image();
       imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
       sceneInfo[0].objs.videoImages.push(imgElem);
     }
-    console.log(sceneInfo[0].objs.videoImages);
+
+    // sceneInfo[2]
+    let imgElem2;
+    for (let i = 0; i < sceneInfo[2].values.videoImageCount; i++) {
+      // 이미지 객체 생성 imgElem = document.createElement('img');와 동일함
+      imgElem2 = new Image();
+      imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
+      sceneInfo[2].objs.videoImages.push(imgElem2);
+    }
   }
   setCanvasImages();
 
@@ -141,6 +157,7 @@
     // 원래 캔버스 높이인 1080과 윈도우 창 높이와 비교해서 비율 구하기 -> 그 비율대로 scale값 맞춰주면 된다! (1 = 100%)
     const heightRatio = window.innerHeight / 1080;
     sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+    sceneInfo[2].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
   }
 
   function calcValues(values, currentYOffset) {
@@ -255,6 +272,19 @@
         break;
 
       case 2:
+        console.log(scrollRatio);
+        // canvas의 context 객체를 사용해 이미지 그리기
+        let sequence2 = Math.round(calcValues(values.imageSequence, currentYOffset));
+        objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+        // canvas opacity 설정
+        if (scrollRatio <= 0.5) {
+          // in
+          objs.canvas.style.opacity = calcValues(values.canvas_opacity_in, currentYOffset);
+        } else {
+          // out
+          objs.canvas.style.opacity = calcValues(values.canvas_opacity_out, currentYOffset);
+        }
+
         if (scrollRatio <= 0.25) {
           // in
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
@@ -271,7 +301,7 @@
           )}%, 0)`;
         }
 
-        if (scrollRatio <= 0.57) {
+        if (scrollRatio <= 0.565) {
           // in
           objs.messageB.style.transform = `translate3d(0, ${calcValues(
             values.messageB_translateY_in,
@@ -289,7 +319,7 @@
           objs.pinB.style.transform = `scaleY(${calcValues(values.pinB_scaleY, currentYOffset)})`;
         }
 
-        if (scrollRatio <= 0.83) {
+        if (scrollRatio <= 0.81) {
           // in
           objs.messageC.style.transform = `translate3d(0, ${calcValues(
             values.messageC_translateY_in,
