@@ -82,16 +82,16 @@
         messageC_opacity_in: [0, 1, { start: 0.9, end: 0.94 }],
         messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
         messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
-        messageC_translateY_out: [0, -20, { start: 0.95, end: 0.97 }],
+        messageC_translateY_out: [0, -20, { start: 0.95, end: 0.99 }],
         messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
         messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-        messageC_opacity_out: [1, 0, { start: 0.95, end: 0.97 }],
+        messageC_opacity_out: [1, 0, { start: 0.95, end: 0.99 }],
         pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
         pinC_scaleY: [0.5, 1, { start: 0.9, end: 0.94 }],
         pinB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
         pinC_opacity_in: [0, 1, { start: 0.9, end: 0.94 }],
         pinB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-        pinC_opacity_out: [1, 0, { start: 0.95, end: 0.97 }],
+        pinC_opacity_out: [1, 0, { start: 0.95, end: 0.99 }],
       },
     },
     {
@@ -102,6 +102,10 @@
       objs: {
         container: document.querySelector('#scroll-section-3'),
         canvasCaption: document.querySelector('.canvas-caption'),
+        canvas: document.querySelector('.image-blend-canvas'),
+        context: document.querySelector('.image-blend-canvas').getContext('2d'),
+        imagePath: ['./images/blend-image-1.jpg', './images/blend-image-2.jpg'],
+        images: [],
       },
     },
   ];
@@ -124,6 +128,14 @@
       imgElem2 = new Image();
       imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
       sceneInfo[2].objs.videoImages.push(imgElem2);
+    }
+
+    //sceneInfo[3]
+    let imgElem3;
+    for (let i = 0; i < sceneInfo[3].objs.imagePath.length; i++) {
+      imgElem3 = new Image();
+      imgElem3.src = sceneInfo[3].objs.imagePath[i];
+      sceneInfo[3].objs.images.push(imgElem3);
     }
   }
   setCanvasImages();
@@ -340,6 +352,22 @@
         break;
 
       case 3:
+        // 가로 세로 꽉 차게 하기 위해 playAnimation에서 세팅 (캔버스 크기 계산 필요)
+        const widthRatio = window.innerWidth / objs.canvas.width;
+        const heightRatio = window.innerHeight / objs.canvas.height;
+        let canvasScaleRatio;
+
+        if (widthRatio <= heightRatio) {
+          // 캔버스보다 브라우저 창의 폭이 작은 경우
+          canvasScaleRatio = heightRatio;
+        } else {
+          // 캔버스보다 브라우저 창의 높이가 작은 경우
+          canvasScaleRatio = widthRatio;
+        }
+
+        objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.drawImage(objs.images[0], 0, 0);
+
         break;
     }
   }

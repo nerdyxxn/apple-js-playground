@@ -191,6 +191,15 @@ p {
   transform: translate(-50%, -50%);
 }
 
+#scroll-section-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-blend-canvas {
+}
+
 /* -------------- Footer -------------- */
 footer {
   display: flex;
