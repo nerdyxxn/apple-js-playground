@@ -73,25 +73,25 @@
         videoImageCount: 960,
         imageSequence: [0, 959],
         canvas_opacity_in: [0, 1, { start: 0, end: 0.1 }],
-        canvas_opacity_out: [1, 0, { start: 0.97, end: 1 }],
+        canvas_opacity_out: [1, 0, { start: 0.93, end: 0.95 }],
         messageA_translateY_in: [20, 0, { start: 0.22, end: 0.3 }],
         messageB_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
-        messageC_translateY_in: [30, 0, { start: 0.9, end: 0.94 }],
+        messageC_translateY_in: [30, 0, { start: 0.88, end: 0.91 }],
         messageA_opacity_in: [0, 1, { start: 0.22, end: 0.3 }],
         messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
-        messageC_opacity_in: [0, 1, { start: 0.9, end: 0.94 }],
+        messageC_opacity_in: [0, 1, { start: 0.88, end: 0.91 }],
         messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
         messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
-        messageC_translateY_out: [0, -20, { start: 0.95, end: 0.99 }],
+        messageC_translateY_out: [0, -20, { start: 0.93, end: 0.95 }],
         messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
         messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-        messageC_opacity_out: [1, 0, { start: 0.95, end: 0.99 }],
+        messageC_opacity_out: [1, 0, { start: 0.93, end: 0.95 }],
         pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
-        pinC_scaleY: [0.5, 1, { start: 0.9, end: 0.94 }],
+        pinC_scaleY: [0.5, 1, { start: 0.88, end: 0.91 }],
         pinB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
-        pinC_opacity_in: [0, 1, { start: 0.9, end: 0.94 }],
+        pinC_opacity_in: [0, 1, { start: 0.88, end: 0.91 }],
         pinB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-        pinC_opacity_out: [1, 0, { start: 0.95, end: 0.99 }],
+        pinC_opacity_out: [1, 0, { start: 0.93, end: 0.95 }],
       },
     },
     {
@@ -336,7 +336,7 @@
           objs.pinB.style.transform = `scaleY(${calcValues(values.pinB_scaleY, currentYOffset)})`;
         }
 
-        if (scrollRatio <= 0.94) {
+        if (scrollRatio <= 0.92) {
           // in
           objs.messageC.style.transform = `translate3d(0, ${calcValues(
             values.messageC_translateY_in,
@@ -371,6 +371,7 @@
         }
 
         objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.fillStyle = '#fff';
         objs.context.drawImage(objs.images[0], 0, 0);
 
         // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight 구하기
@@ -379,7 +380,6 @@
 
         // rectStartY 기본값일 경우에만 캔버스의 Y위치 계산하도록 설정
         if (!values.rectStartY) {
-          // values.rectStartY = objs.canvas.getBoundingClientRect().top;
           values.rectStartY =
             objs.canvas.offsetTop +
             (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
