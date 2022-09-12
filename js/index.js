@@ -110,6 +110,7 @@
       values: {
         rect1X: [0, 0, { start: 0, end: 0 }],
         rect2X: [0, 0, { start: 0, end: 0 }],
+        rectStartY: 0,
       },
     },
   ];
@@ -376,9 +377,15 @@
         const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
         const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
 
-        // 화이트 박스 영역 recalculatedInnerWidth의 15% 정도 비율로 결정
-        const whiteRectWidth = recalculatedInnerWidth * 0.15;
+        // rectStartY 기본값일 경우에만 캔버스의 Y위치 계산하도록 설정
+        if (!values.rectStartY) {
+          values.rectStartY = objs.canvas.getBoundingClientRect().top;
+          values.rect1X[2].end = values.rectStartY / scrollHeight;
+          values.rect2X[2].end = values.rectStartY / scrollHeight;
+        }
 
+        // 화이트박스 영역 recalculatedInnerWidth의 15% 정도 비율로 결정
+        const whiteRectWidth = recalculatedInnerWidth * 0.15;
         // 좌측 화이트박스 X좌표 초기값 = (1920px - 재계산된 블랙 영역) / 2
         values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
         // 좌측 화이트박스 X좌표 최종값 = 좌측 화이트박스 X좌표 초기값 - 화이트박스 영역의 폭
@@ -389,8 +396,18 @@
         values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
 
         // 좌우 화이트박스 그리기 (애니메이션 전 기본 상태)
-        objs.context.fillRect(values.rect1X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
-        objs.context.fillRect(values.rect2X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
+        objs.context.fillRect(
+          parseInt(calcValues(values.rect1X, currentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height
+        );
+        objs.context.fillRect(
+          parseInt(calcValues(values.rect2X, currentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height
+        );
 
         break;
     }
