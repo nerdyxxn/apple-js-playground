@@ -374,12 +374,15 @@
         objs.context.drawImage(objs.images[0], 0, 0);
 
         // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight 구하기
-        const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
+        const recalculatedInnerWidth = document.body.offsetWidth / canvasScaleRatio;
         const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
 
         // rectStartY 기본값일 경우에만 캔버스의 Y위치 계산하도록 설정
         if (!values.rectStartY) {
-          values.rectStartY = objs.canvas.getBoundingClientRect().top;
+          // values.rectStartY = objs.canvas.getBoundingClientRect().top;
+          values.rectStartY =
+            objs.canvas.offsetTop +
+            (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
           values.rect1X[2].end = values.rectStartY / scrollHeight;
           values.rect2X[2].end = values.rectStartY / scrollHeight;
         }
