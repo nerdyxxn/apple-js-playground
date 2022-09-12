@@ -107,6 +107,10 @@
         imagePath: ['./images/blend-image-1.jpg', './images/blend-image-2.jpg'],
         images: [],
       },
+      values: {
+        rect1X: [0, 0, { start: 0, end: 0 }],
+        rect2X: [0, 0, { start: 0, end: 0 }],
+      },
     },
   ];
 
@@ -367,6 +371,26 @@
 
         objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
         objs.context.drawImage(objs.images[0], 0, 0);
+
+        // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight 구하기
+        const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
+        const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
+
+        // 화이트 박스 영역 recalculatedInnerWidth의 15% 정도 비율로 결정
+        const whiteRectWidth = recalculatedInnerWidth * 0.15;
+
+        // 좌측 화이트박스 X좌표 초기값 = (1920px - 재계산된 블랙 영역) / 2
+        values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+        // 좌측 화이트박스 X좌표 최종값 = 좌측 화이트박스 X좌표 초기값 - 화이트박스 영역의 폭
+        values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+        // 우측 화이트박스 X좌표 초기값 = 좌측 화이트박스 X좌표 초기값 + 블랙영역 폭 - 화이트박스 영역의 폭
+        values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+        // 우측 화이트박스 X좌표 최종값 = 우측 화이트박스 X좌표 초기값 + 화이트박스 영역의 폭
+        values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+        // 좌우 화이트박스 그리기 (애니메이션 전 기본 상태)
+        objs.context.fillRect(values.rect1X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
+        objs.context.fillRect(values.rect2X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
 
         break;
     }
