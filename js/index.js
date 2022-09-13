@@ -380,9 +380,14 @@
 
         // rectStartY 기본값일 경우에만 캔버스의 Y위치 계산하도록 설정
         if (!values.rectStartY) {
+          // offsetTop에 캔버스가 늘어나거나 줄어든 비율을 적용해서 캔버스의 Y위치(top값) 구하기
           values.rectStartY =
             objs.canvas.offsetTop +
             (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
+
+          // start & end 지점 설정
+          values.rect1X[2].start = window.innerHeight / 2 / scrollHeight;
+          values.rect2X[2].start = window.innerHeight / 2 / scrollHeight;
           values.rect1X[2].end = values.rectStartY / scrollHeight;
           values.rect2X[2].end = values.rectStartY / scrollHeight;
         }
