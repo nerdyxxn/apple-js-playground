@@ -73,25 +73,25 @@
         videoImageCount: 960,
         imageSequence: [0, 959],
         canvas_opacity_in: [0, 1, { start: 0, end: 0.1 }],
-        canvas_opacity_out: [1, 0, { start: 0.93, end: 0.95 }],
+        canvas_opacity_out: [1, 0, { start: 0.95, end: 0.97 }],
         messageA_translateY_in: [20, 0, { start: 0.22, end: 0.3 }],
         messageB_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
-        messageC_translateY_in: [30, 0, { start: 0.88, end: 0.91 }],
+        messageC_translateY_in: [30, 0, { start: 0.9, end: 0.93 }],
         messageA_opacity_in: [0, 1, { start: 0.22, end: 0.3 }],
         messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
-        messageC_opacity_in: [0, 1, { start: 0.88, end: 0.91 }],
+        messageC_opacity_in: [0, 1, { start: 0.9, end: 0.93 }],
         messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
         messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
-        messageC_translateY_out: [0, -20, { start: 0.93, end: 0.95 }],
+        messageC_translateY_out: [0, -20, { start: 0.95, end: 0.97 }],
         messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
         messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-        messageC_opacity_out: [1, 0, { start: 0.93, end: 0.95 }],
+        messageC_opacity_out: [1, 0, { start: 0.95, end: 0.97 }],
         pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
-        pinC_scaleY: [0.5, 1, { start: 0.88, end: 0.91 }],
+        pinC_scaleY: [0.5, 1, { start: 0.9, end: 0.93 }],
         pinB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
-        pinC_opacity_in: [0, 1, { start: 0.88, end: 0.91 }],
+        pinC_opacity_in: [0, 1, { start: 0.9, end: 0.93 }],
         pinB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-        pinC_opacity_out: [1, 0, { start: 0.93, end: 0.95 }],
+        pinC_opacity_out: [1, 0, { start: 0.95, end: 0.97 }],
       },
     },
     {
@@ -336,7 +336,7 @@
           objs.pinB.style.transform = `scaleY(${calcValues(values.pinB_scaleY, currentYOffset)})`;
         }
 
-        if (scrollRatio <= 0.92) {
+        if (scrollRatio <= 0.93) {
           // in
           objs.messageC.style.transform = `translate3d(0, ${calcValues(
             values.messageC_translateY_in,
@@ -352,6 +352,52 @@
           )}%, 0)`;
           objs.messageC.style.opacity = calcValues(values.messageC_opacity_out, currentYOffset);
           objs.pinC.style.transform = `scaleY(${calcValues(values.pinC_scaleY, currentYOffset)})`;
+        }
+
+        // currentScene 3의 캔버스 미리 그려주기 시작
+        if (scrollRatio > 0.9) {
+          const objs = sceneInfo[3].objs;
+          const values = sceneInfo[3].values;
+
+          const widthRatio = window.innerWidth / objs.canvas.width;
+          const heightRatio = window.innerHeight / objs.canvas.height;
+          let canvasScaleRatio;
+
+          if (widthRatio <= heightRatio) {
+            // 캔버스보다 브라우저 창의 폭이 작은 경우
+            canvasScaleRatio = heightRatio;
+          } else {
+            // 캔버스보다 브라우저 창의 높이가 작은 경우
+            canvasScaleRatio = widthRatio;
+          }
+
+          objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+          objs.context.fillStyle = '#fff';
+          objs.context.drawImage(objs.images[0], 0, 0);
+
+          // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight 구하기
+          const recalculatedInnerWidth = document.body.offsetWidth / canvasScaleRatio;
+          const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
+
+          const whiteRectWidth = recalculatedInnerWidth * 0.15;
+          values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+          values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+          values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+          values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+          // 좌우 화이트박스 그리기 (애니메이션 전 기본 상태) -> calcValues없이 초기값으로 설정
+          objs.context.fillRect(
+            parseInt(values.rect1X[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height
+          );
+          objs.context.fillRect(
+            parseInt(values.rect2X[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height
+          );
         }
 
         break;
