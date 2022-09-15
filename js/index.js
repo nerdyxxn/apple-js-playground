@@ -403,6 +403,7 @@
         break;
 
       case 3:
+        let step = 0;
         // 가로 세로 꽉 차게 하기 위해 playAnimation에서 세팅 (캔버스 크기 계산 필요)
         const widthRatio = window.innerWidth / objs.canvas.width;
         const heightRatio = window.innerHeight / objs.canvas.height;
@@ -462,6 +463,21 @@
           parseInt(whiteRectWidth),
           objs.canvas.height
         );
+
+        // 애니메이션 효과를 3개의 step으로 나눠서 구현
+        // step 1 : 캔버스가 브라우저 상단에 닿기 전
+        if (scrollRatio < values.rect1X[2].end) {
+          step = 1;
+          objs.canvas.classList.remove('sticky');
+        } else {
+          // step 2 : 닿은 이후 이미지 블렌딩 & scale 축소
+          step = 2;
+          // 스크롤에 따른 캔버스 포지션 변경
+          objs.canvas.classList.add('sticky');
+          objs.canvas.style.top = `${
+            -(objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2
+          }px`;
+        }
 
         break;
     }
