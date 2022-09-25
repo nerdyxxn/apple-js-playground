@@ -475,8 +475,7 @@
           // step 2 : 닿은 이후 이미지 블렌딩 & scale 축소
           step = 2;
 
-          // 이미지 블렌드
-          // blendHeight: [0, 0, { start: 0, end: 0 }],
+          // 이미지 블렌드 - blendHeight: [0, 0, { start: 0, end: 0 }]
           values.blendHeight[0] = 0;
           values.blendHeight[1] = objs.canvas.height;
           values.blendHeight[2].start = values.rect1X[2].end;
@@ -513,6 +512,12 @@
               values.canvas_scale,
               currentYOffset
             )})`;
+          }
+
+          // step 3 : 포지션 fixed 제거하고 스크롤 위로 올라가도록 설정
+          if (scrollRatio > values.canvas_scale[2].end && values.canvas_scale[2].end > 0) {
+            objs.canvas.classList.remove('sticky');
+            objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
           }
         }
 
