@@ -512,6 +512,7 @@
               values.canvas_scale,
               currentYOffset
             )})`;
+            objs.canvas.style.marginTop = 0;
           }
 
           // step 3 : 포지션 fixed 제거하고 스크롤 위로 올라가도록 설정
