@@ -125,7 +125,7 @@ p {
 }
 
 .desc-message {
-  width: 50%;
+  width: 50% !important;
   font-weight: bold;
   opacity: 0;
 }

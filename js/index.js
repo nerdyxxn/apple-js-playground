@@ -111,6 +111,7 @@
         rect1X: [0, 0, { start: 0, end: 0 }],
         rect2X: [0, 0, { start: 0, end: 0 }],
         blendHeight: [0, 0, { start: 0, end: 0 }],
+        canvas_scale: [0, 0, { start: 0, end: 0 }],
         rectStartY: 0,
       },
     },
@@ -473,11 +474,6 @@
         } else {
           // step 2 : 닿은 이후 이미지 블렌딩 & scale 축소
           step = 2;
-          // 스크롤에 따른 캔버스 포지션 변경
-          objs.canvas.classList.add('sticky');
-          objs.canvas.style.top = `${
-            -(objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2
-          }px`;
 
           // 이미지 블렌드
           // blendHeight: [0, 0, { start: 0, end: 0 }],
@@ -499,6 +495,25 @@
             objs.canvas.width,
             blendHeight
           );
+
+          // 스크롤에 따른 캔버스 포지션 변경 (코드 위치 변경 금지)
+          objs.canvas.classList.add('sticky');
+          objs.canvas.style.top = `${
+            -(objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2
+          }px`;
+
+          // 이미지 블렌드가 끝난 시점에 캔버스 스케일 조정
+          if (scrollRatio > values.blendHeight[2].end) {
+            values.canvas_scale[0] = canvasScaleRatio;
+            values.canvas_scale[1] = document.body.offsetWidth / (1.5 * objs.canvas.width);
+            values.canvas_scale[2].start = values.blendHeight[2].end;
+            values.canvas_scale[2].end = values.canvas_scale[2].start + 0.2;
+
+            objs.canvas.style.transform = `scale(${calcValues(
+              values.canvas_scale,
+              currentYOffset
+            )})`;
+          }
         }
 
         break;
