@@ -149,6 +149,14 @@
   }
   setCanvasImages();
 
+  function checkMenu() {
+    if (yOffset > 44) {
+      document.body.classList.add('local-nav-sticky');
+    } else {
+      document.body.classList.remove('local-nav-sticky');
+    }
+  }
+
   function setLayout() {
     // 각 section의 높이 세팅
     for (let i = 0; i < sceneInfo.length; i++) {
@@ -573,12 +581,12 @@
     // 현재 스크롤 위치 변수에 담기
     yOffset = window.pageYOffset;
     scrollLoop();
+    checkMenu();
   });
-
-  window.addEventListener('resize', setLayout);
   window.addEventListener('load', () => {
     setLayout();
     // 화면 로드됐을 때 canvas 첫 이미지 그려주기
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
   });
+  window.addEventListener('resize', setLayout);
 })();
