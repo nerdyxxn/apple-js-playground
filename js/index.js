@@ -584,9 +584,13 @@
     checkMenu();
   });
   window.addEventListener('load', () => {
+    document.body.classList.remove('before-load');
     setLayout();
     // 화면 로드됐을 때 canvas 첫 이미지 그려주기
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
   });
   window.addEventListener('resize', setLayout);
+  document.querySelector('.loading').addEventListener('transitionend', (e) => {
+    document.body.removeChild(e.currentTarget);
+  });
 })();
