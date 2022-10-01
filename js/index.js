@@ -608,36 +608,36 @@
     }
   }
 
-  window.addEventListener('scroll', () => {
-    // 현재 스크롤 위치 변수에 담기
-    yOffset = window.pageYOffset;
-    scrollLoop();
-    checkMenu();
-
-    if (!rafState) {
-      rafId = requestAnimationFrame(loop);
-      rafState = true;
-    }
-  });
-
   window.addEventListener('load', () => {
     document.body.classList.remove('before-load');
     setLayout();
     // 화면 로드됐을 때 canvas 첫 이미지 그려주기
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
-  });
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900) {
-      setLayout;
-    }
-    sceneInfo[3].values.rectStartY = 0;
-  });
+    window.addEventListener('scroll', () => {
+      // 현재 스크롤 위치 변수에 담기
+      yOffset = window.pageYOffset;
+      scrollLoop();
+      checkMenu();
 
-  window.addEventListener('orientationchange', setLayout);
+      if (!rafState) {
+        rafId = requestAnimationFrame(loop);
+        rafState = true;
+      }
+    });
 
-  document.querySelector('.loading').addEventListener('transitionend', (e) => {
-    document.body.removeChild(e.currentTarget);
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) {
+        setLayout();
+      }
+      sceneInfo[3].values.rectStartY = 0;
+    });
+
+    window.addEventListener('orientationchange', setLayout);
+
+    document.querySelector('.loading').addEventListener('transitionend', (e) => {
+      document.body.removeChild(e.currentTarget);
+    });
   });
 
   setCanvasImages();

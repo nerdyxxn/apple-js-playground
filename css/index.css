@@ -21,6 +21,10 @@ p {
   line-height: 1.6;
 }
 
+body.before-load {
+  overflow: hidden;
+}
+
 /* -------------- NavBar -------------- */
 .global-nav {
   position: absolute;
