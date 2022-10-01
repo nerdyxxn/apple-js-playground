@@ -334,7 +334,7 @@
           )}%, 0)`;
         }
 
-        if (scrollRatio <= 0.7) {
+        if (scrollRatio <= 0.68) {
           // in
           objs.messageB.style.transform = `translate3d(0, ${calcValues(
             values.messageB_translateY_in,
