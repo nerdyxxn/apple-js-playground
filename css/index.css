@@ -25,6 +25,11 @@ body.before-load {
   overflow: hidden;
 }
 
+.container {
+  /* 아이폰 가로 스크롤 방지 */
+  overflow-x: hidden;
+}
+
 /* -------------- NavBar -------------- */
 .global-nav {
   position: absolute;
@@ -52,6 +57,9 @@ body.before-load {
   position: fixed;
   top: 0;
   background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: saturate(180%) blur(15px);
+  -moz-backdrop-filter: saturate(180%) blur(15px);
+  -o-backdrop-filter: saturate(180%) blur(15px);
   backdrop-filter: saturate(180%) blur(15px);
 }
 
@@ -149,7 +157,8 @@ body.before-load {
 
 #scroll-section-2 .b {
   top: 10%;
-  left: 40%;
+  left: 47%;
+  width: 45%;
 }
 
 #scroll-section-2 .c {
@@ -171,7 +180,7 @@ body.before-load {
 
 .canvas-caption {
   max-width: 1000px;
-  margin: -8em auto 0;
+  margin: -24rem auto 0;
   padding: 0 1rem;
   font-size: 1.2rem;
   color: #888;
@@ -306,6 +315,7 @@ footer {
   #scroll-section-2 .b {
     top: 20%;
     left: 53%;
+    width: 20%;
   }
   #scroll-section-2 .c {
     left: 55%;
@@ -316,6 +326,7 @@ footer {
     font-size: 4vw;
   }
   .canvas-caption {
+    margin-top: -8rem;
     padding: 0;
     font-size: 2rem;
   }
