@@ -648,13 +648,16 @@
 
     window.addEventListener('resize', () => {
       if (window.innerWidth > 900) {
-        setLayout();
-        sceneInfo[3].values.rectStartY = 0;
+        window.location.reload();
       }
     });
 
     window.addEventListener('orientationchange', () => {
-      setTimeout(setLayout, 500);
+      // 모바일은 기기마다 경우의 수 다양하기 때문에 -> 스크롤 위로 올려주기
+      scrollTo(0, 0);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     });
 
     document.querySelector('.loading').addEventListener('transitionend', (e) => {
