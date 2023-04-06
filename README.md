@@ -1,5 +1,5 @@
 ## Apple Website Interaction Clone!
-
+<img src="https://user-images.githubusercontent.com/66936285/230346582-372e597a-9bf4-40b5-9b68-fb8c9dce31ab.png"/>
 
 <br>
 <br>
